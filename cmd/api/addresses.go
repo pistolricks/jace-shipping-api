@@ -11,14 +11,20 @@ import (
 func (app *application) FormatStandardAddress(w http.ResponseWriter, r *http.Request) {
 
 	var input struct {
-		Firm             string `url:"firm,omitempty"`
-		StreetAddress    string `url:"streetAddress"`
-		SecondaryAddress string `url:"secondaryAddress,omitempty"`
-		City             string `url:"city,omitempty"`
-		State            string `url:"state"`
-		Urbanization     string `url:"urbanization,omitempty"`
-		ZIPCode          string `url:"ZIPCode,omitempty"`
-		ZIPPlus4         string `url:"ZIPPlus4,omitempty"`
+		Firm             string `json:"firm,omitempty"`
+		StreetAddress    string `json:"streetAddress"`
+		SecondaryAddress string `json:"secondaryAddress,omitempty"`
+		City             string `json:"city,omitempty"`
+		State            string `json:"state"`
+		Urbanization     string `json:"urbanization,omitempty"`
+		ZIPCode          string `json:"ZIPCode,omitempty"`
+		ZIPPlus4         string `json:"ZIPPlus4,omitempty"`
+	}
+
+	err := app.readJSON(w, r, &input)
+	if err != nil {
+		app.badRequestResponse(w, r, err)
+		return
 	}
 
 	client := usps.NewClientWithOAuth(app.config.usps.key, app.config.usps.secret)

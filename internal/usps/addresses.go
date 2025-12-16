@@ -9,12 +9,17 @@ import (
 	"github.com/my-eq/go-usps/models"
 )
 
-func StandardizedAddress(client *usps.Client, addressRequest *models.AddressRequest) (*models.AddressResponse, error) {
+func StandardizedAddress(client *usps.Client, address *models.AddressRequest) (*models.AddressResponse, error) {
 
 	req := &models.AddressRequest{
-		StreetAddress: "1578 Topeka Avenue",
-		City:          "Placentia",
-		State:         "CA",
+		Firm:             address.Firm,
+		StreetAddress:    address.StreetAddress,
+		SecondaryAddress: address.SecondaryAddress,
+		City:             address.City,
+		State:            address.State,
+		Urbanization:     address.Urbanization,
+		ZIPCode:          address.ZIPCode,
+		ZIPPlus4:         address.ZIPPlus4,
 	}
 
 	resp, err := client.GetAddress(context.Background(), req)
