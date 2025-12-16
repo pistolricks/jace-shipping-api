@@ -33,6 +33,10 @@ type config struct {
 		maxIdleConns int
 		maxIdleTime  time.Duration
 	}
+	usps struct {
+		key    string
+		secret string
+	}
 	limiter struct {
 		enabled bool
 		rps     float64
@@ -81,6 +85,9 @@ func main() {
 	flag.StringVar(&cfg.smtp.password, "smtp-password", "e75ffd0a3aa5ec", "SMTP password")
 	flag.StringVar(&cfg.smtp.sender, "smtp-sender", "Greenlight <no-reply@github.com/pistolricks/ShippingApi>", "SMTP sender")
 
+	flag.StringVar(&cfg.usps.key, "consumer-key", "", "Consumer Key")
+	flag.StringVar(&cfg.usps.secret, "consumer-secret", "", "Consumer Secret")
+
 	flag.Func("cors-trusted-origins", "Trusted CORS origins (space separated)", func(val string) error {
 		cfg.cors.trustedOrigins = strings.Fields(val)
 		return nil
@@ -105,6 +112,9 @@ func main() {
 	defer db.Close()
 
 	logger.Info("database connection pool established")
+
+	logger.Info("USPS Credentials Loaded")
+	fmt.Printf("Key: %s, Secret: %s", cfg.usps.key, cfg.usps.secret)
 
 	expvar.NewString("version").Set(version)
 
