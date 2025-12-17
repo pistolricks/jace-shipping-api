@@ -16,7 +16,6 @@ blocks:
             - 'export PATH=/home/semaphore/go/bin:$PATH'
             - checkout
             - go mod tidy
-            - go build -ldflags="-s" -o=./bin/api ./cmd/api
       env_vars:
         - name: GREENLIGHT_DB_DSN
           value: 'postgres://greenlight:pa55word@localhost/greenlight?sslmode=disable'
