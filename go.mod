@@ -1,6 +1,6 @@
 module github.com/pistolricks/ShippingApi
 
-go 1.25.5
+go 1.24.7
 
 require (
 	github.com/julienschmidt/httprouter v1.3.0
