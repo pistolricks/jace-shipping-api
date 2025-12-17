@@ -1,0 +1,31 @@
+version: v1.0
+name: Go
+agent:
+  machine:
+    type: f1-standard-2
+    os_image: ubuntu2204
+blocks:
+  - name: Test
+    task:
+      jobs:
+        - name: go test
+          commands:
+            - sem-version go 1.11
+            - export GO111MODULE=on
+            - export GOPATH=~/go
+            - 'export PATH=/home/semaphore/go/bin:$PATH'
+            - checkout
+            - go get ./...
+            - go test ./...
+            - go build -v ./cmd/api
+      env_vars:
+        - name: GREENLIGHT_DB_DSN
+          value: 'postgres://greenlight:pa55word@localhost/greenlight?sslmode=disable'
+        - name: MAIL_TEST_USERNAME
+          value: c151c470acd048
+        - name: MAIL_TEST_PASSWORD
+          value: 05edc7bc588a45
+        - name: CONSUMER_KEY
+          value: cYLSImKzQQhhnW8fHocyhfPxZFakTjIiT1urIMAveGILk1c4
+        - name: CONSUMER_SECRET
+          value: 7AQV6vzAABG3pdJd2WLs4F0MrKlBbxDm3PBfNHuMsL56itaKfimDiXGj7TpadL1v
