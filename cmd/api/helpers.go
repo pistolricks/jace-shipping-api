@@ -10,7 +10,12 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/coldbrewcloud/go-shippo"
+	"github.com/my-eq/go-usps"
+	uspsApi "github.com/pistolricks/ShippingApi/internal/usps"
 	"github.com/pistolricks/ShippingApi/internal/validator"
+
+	"github.com/coldbrewcloud/go-shippo/client"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -148,4 +153,21 @@ func (app *application) background(fn func()) {
 
 		fn()
 	})
+}
+
+func (app *application) postalClient() *usps.Client {
+	return usps.NewClientWithOAuth(app.config.usps.key, app.config.usps.secret)
+}
+func (app *application) postalRatesClient() *uspsApi.PricesClient {
+	return uspsApi.NewPricesClient(app.config.usps.key, app.config.usps.secret)
+}
+
+func (app *application) shippoClient() *client.Client {
+	privateToken := app.config.shippo.key
+	if privateToken == "" {
+		panic(errors.New("Please set $PRIVATE_TOKEN with your Shippo API private token."))
+	}
+
+	// create a Shippo Client instance
+	return shippo.NewClient(privateToken)
 }

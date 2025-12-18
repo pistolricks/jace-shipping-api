@@ -13,11 +13,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/coldbrewcloud/go-shippo/models"
+	_ "github.com/lib/pq"
 	"github.com/pistolricks/ShippingApi/internal/data"
 	"github.com/pistolricks/ShippingApi/internal/mailer"
 	"github.com/pistolricks/ShippingApi/internal/vcs"
-
-	_ "github.com/lib/pq"
 )
 
 var (
@@ -36,6 +36,10 @@ type config struct {
 	usps struct {
 		key    string
 		secret string
+	}
+	shippo struct {
+		key     string
+		address *models.AddressInput
 	}
 	limiter struct {
 		enabled bool
@@ -87,6 +91,7 @@ func main() {
 
 	flag.StringVar(&cfg.usps.key, "consumer-key", "", "Consumer Key")
 	flag.StringVar(&cfg.usps.secret, "consumer-secret", "", "Consumer Secret")
+	flag.StringVar(&cfg.shippo.key, "shippo-key", "", "Shippo Key")
 
 	flag.Func("cors-trusted-origins", "Trusted CORS origins (space separated)", func(val string) error {
 		cfg.cors.trustedOrigins = strings.Fields(val)

@@ -15,7 +15,8 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodGet, "/api/v1/healthcheck", app.healthcheckHandler)
 
-	router.HandlerFunc(http.MethodPost, "/api/v1/addresses", app.FormatStandardAddress)
+	router.HandlerFunc(http.MethodPost, "/api/v1/addresses", app.handleStandardAddress)
+	router.HandlerFunc(http.MethodPost, "/api/v1/rates", app.handleShippingRates)
 
 	router.HandlerFunc(http.MethodPost, "/api/v1/users", app.registerUserHandler)
 	router.HandlerFunc(http.MethodPut, "/api/v1/users/activated", app.activateUserHandler)

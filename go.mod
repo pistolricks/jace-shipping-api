@@ -3,6 +3,7 @@ module github.com/pistolricks/ShippingApi
 go 1.24.7
 
 require (
+	github.com/coldbrewcloud/go-shippo v1.6.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/lib/pq v1.10.9
 	github.com/my-eq/go-usps v0.0.0-20251104211456-bed83412cac1
@@ -12,4 +13,8 @@ require (
 	golang.org/x/time v0.14.0
 )
 
-require golang.org/x/text v0.32.0 // indirect
+require (
+	golang.org/x/net v0.47.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
+	resty.dev/v3 v3.0.0-beta.5 // indirect
+)

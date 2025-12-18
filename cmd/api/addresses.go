@@ -3,12 +3,11 @@ package main
 import (
 	"net/http"
 
-	"github.com/my-eq/go-usps"
 	"github.com/my-eq/go-usps/models"
 	uspsApi "github.com/pistolricks/ShippingApi/internal/usps"
 )
 
-func (app *application) FormatStandardAddress(w http.ResponseWriter, r *http.Request) {
+func (app *application) handleStandardAddress(w http.ResponseWriter, r *http.Request) {
 
 	var input struct {
 		Firm             string `json:"firm,omitempty"`
@@ -27,8 +26,6 @@ func (app *application) FormatStandardAddress(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	client := usps.NewClientWithOAuth(app.config.usps.key, app.config.usps.secret)
-
 	// Standardize an address
 	req := &models.AddressRequest{
 		Firm:             input.Firm,
@@ -41,7 +38,7 @@ func (app *application) FormatStandardAddress(w http.ResponseWriter, r *http.Req
 		ZIPPlus4:         input.ZIPPlus4,
 	}
 
-	resp, err := uspsApi.StandardizedAddress(client, req)
+	resp, err := uspsApi.StandardizedAddress(app.postalClient(), req)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
